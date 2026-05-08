@@ -80,8 +80,9 @@ class ScheduleManager {
     }
 
     func getAllUpcomingPeriods() -> [Period] {
+        let startOfToday = Calendar.current.startOfDay(for: Date())
         let fetchDescriptor = FetchDescriptor<SchoolDay>(
-            predicate: #Predicate { $0.date >= Calendar.current.startOfDay(for: Date()) },
+            predicate: #Predicate { $0.date >= startOfToday },
             sortBy: [SortDescriptor(\.date)]
         )
 
