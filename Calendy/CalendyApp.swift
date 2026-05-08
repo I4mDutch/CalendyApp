@@ -6,12 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct CalendyApp: App {
+    var sharedModelContainer: ModelContainer = SharedContainer.create()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear {
+                    NotificationManager.shared.requestAuthorization()
+                }
         }
+        .modelContainer(sharedModelContainer)
     }
 }
