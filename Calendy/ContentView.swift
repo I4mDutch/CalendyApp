@@ -36,6 +36,24 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             List {
+                if courses.isEmpty {
+                    Section {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Welcome to Calendy!")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                            Text("Get started by adding your first course and setting up your schedule in Settings.")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                            Button("Add My First Course") {
+                                showingAddCourse = true
+                            }
+                            .buttonStyle(.borderedProminent)
+                        }
+                        .padding(.vertical, 8)
+                    }
+                }
+
                 Section("Now") {
                     if let period = currentPeriod {
                         PeriodRow(period: period, isCurrent: true)

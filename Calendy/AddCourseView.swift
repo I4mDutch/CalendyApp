@@ -61,11 +61,12 @@ struct AddCourseView: View {
     private func saveCourse() {
         let newCourse = Course(name: name, room: room, teacher: teacher, colorHex: colorHex)
         let newPeriod = Period(startTime: startTime, endTime: endTime, dayType: dayType)
-        newPeriod.course = newCourse
 
         modelContext.insert(newCourse)
+        newPeriod.course = newCourse
         modelContext.insert(newPeriod)
 
+        try? modelContext.save()
         dismiss()
     }
 }
