@@ -13,6 +13,9 @@ struct ScheduleSettingsView: View {
     @State private var selectedDate = Date()
     @State private var selectedDayType = "A"
 
+    @Query private var courses: [Course]
+    @Query private var periods: [Period]
+
     var body: some View {
         Form {
             Section("Assign Day Type") {
@@ -38,6 +41,12 @@ struct ScheduleSettingsView: View {
                     }
                     .onDelete(perform: deleteDays)
                 }
+            }
+
+            Section("Debug Info") {
+                LabeledContent("Total Courses", value: "\(courses.count)")
+                LabeledContent("Total Periods", value: "\(periods.count)")
+                LabeledContent("Total Assigned Days", value: "\(schoolDays.count)")
             }
         }
         .navigationTitle("Schedule Settings")
