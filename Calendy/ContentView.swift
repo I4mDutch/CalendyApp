@@ -55,14 +55,43 @@ struct ContentView: View {
                 }
 
                 Section("Today's Schedule (\(currentDayType))") {
-                    let todayPeriods = scheduleManager?.getPeriods(for: Date()) ?? []
-                    if todayPeriods.isEmpty {
-                        Text("No classes scheduled for today")
+                    if currentDayType == "None" {
+                        Text("Please assign a Day Type in Settings to see today's schedule.")
+                            .font(.callout)
+                            .foregroundStyle(.orange)
+                    } else {
+                        let todayPeriods = scheduleManager?.getPeriods(for: Date()) ?? []
+                        if todayPeriods.isEmpty {
+                            Text("No classes scheduled for today")
+                                .foregroundStyle(.secondary)
+                        } else {
+                            ForEach(todayPeriods) { period in
+                                PeriodRow(period: period, isCurrent: period.id == currentPeriod?.id)
+                            }
+                        }
+                    }
+                }
+
+                Section("All Courses") {
+                    if courses.isEmpty {
+                        Text("No courses added yet.")
                             .foregroundStyle(.secondary)
                     } else {
-                        ForEach(todayPeriods) { period in
-                            PeriodRow(period: period, isCurrent: period.id == currentPeriod?.id)
+                        ForEach(courses) { course in
+                            HStack {
+                                Circle()
+                                    .fill(course.color)
+                                    .frame(width: 12, height: 12)
+                                VStack(alignment: .leading) {
+                                    Text(course.name)
+                                        .font(.headline)
+                                    Text("\(course.periods.count) periods scheduled")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
                         }
+                        .onDelete(perform: deleteCourses)
                     }
                 }
             }
@@ -115,6 +144,12 @@ struct ContentView: View {
             LiveActivityManager.shared.updateOrCreateActivity(for: current)
         } else {
             LiveActivityManager.shared.endAllActivities()
+        }
+    }
+
+    private func deleteCourses(offsets: IndexSet) {
+        for index in offsets {
+            modelContext.delete(courses[index])
         }
     }
 
