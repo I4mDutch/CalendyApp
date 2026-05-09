@@ -21,6 +21,7 @@ enum SharedContainer {
             let url = groupURL.appendingPathComponent("Calendy.sqlite")
             modelConfiguration = ModelConfiguration(schema: schema, url: url)
         } else {
+            print("SharedContainer: App Group '\(groupIdentifier)' not found or not entitled. Using local storage.")
             modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         }
 
